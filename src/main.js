@@ -1,12 +1,16 @@
-import {createDayItemTemplate} from './components/days-item.js';
-import {createDaysListTemplate} from './components/days-list.js';
+// import {createDayItemTemplate} from './components/days.js/index.js';
+// import {createDaysListTemplate} from './components/days-list.js';
 import {createFilterTemplate} from './components/filter.js';
 import {createInfoTemplate} from './components/info.js';
 import {createMenuTemplate} from './components/menu.js';
 import {createNewEventTemplate} from './components/new-event.js';
 import {createSortingTemplate} from './components/sorting.js';
 
-const DAYS_COUNT = 3;
+import {filters} from './mock/filters';
+import {menuNames} from './mock/menu.js';
+import {generateEvent} from './mock/days';
+
+// const DAYS_COUNT = 3;
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteTripInfoContainerElement = siteHeaderElement.querySelector(`.trip-main__trip-info`);
@@ -18,20 +22,20 @@ const render = (element, template, place) => {
   element.insertAdjacentHTML(place, template);
 };
 
-render(siteTripInfoContainerElement, createInfoTemplate(), `afterbegin`);
+render(siteTripInfoContainerElement, createInfoTemplate(`Cheboksary`, `Boston`), `afterbegin`);
 
 
-render(siteMainMenuHeaderElement, createMenuTemplate(), `afterend`);
-render(siteMainFilterHeaderElement, createFilterTemplate(), `afterend`);
+render(siteMainMenuHeaderElement, createMenuTemplate(menuNames), `afterend`);
+render(siteMainFilterHeaderElement, createFilterTemplate(filters), `afterend`);
 
 render(siteContentContainerElement, createSortingTemplate(), `beforeend`);
-render(siteContentContainerElement, createNewEventTemplate(), `beforeend`);
-render(siteContentContainerElement, createDaysListTemplate(), `beforeend`);
+render(siteContentContainerElement, createNewEventTemplate(generateEvent()), `beforeend`);
+// render(siteContentContainerElement, createDaysListTemplate(), `beforeend`);
 
-const eventsListContainerElement = siteContentContainerElement.querySelector(`.trip-days`);
+// const eventsListContainerElement = siteContentContainerElement.querySelector(`.trip-days`);
 
-new Array(DAYS_COUNT)
-  .fill(``)
-  .forEach(
-      () => render(eventsListContainerElement, createDayItemTemplate(), `beforeend`)
-  );
+// new Array(DAYS_COUNT)
+//   .fill(``)
+//   .forEach(
+//       () => render(eventsListContainerElement, createDayItemTemplate(), `beforeend`)
+//   );
