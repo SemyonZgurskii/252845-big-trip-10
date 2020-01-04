@@ -1,3 +1,5 @@
+import {getFormatDate, getFormatTime} from '../utils.js';
+
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
     <input id="event-type-${typeName}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeName}">
@@ -32,7 +34,7 @@ const createOptionList = (options) => {
 };
 
 export const createNewEventTemplate = (eventsData) => {
-  const {transferEventTypes, actionEventTypes, cities, photo, description, date, time, options} = eventsData;
+  const {transferEventTypes, actionEventTypes, cities, photo, description, date, options} = eventsData;
   const transferTypes = transferEventTypes
     .map((it) => createEventType(it))
     .join(`\n`);
@@ -42,6 +44,10 @@ export const createNewEventTemplate = (eventsData) => {
   const citiesList = cities
     .map((it) => createCityOption(it))
     .join(`\n`);
+  const startTime = getFormatDate(date) + ` ` + getFormatTime(date);
+  const timeGap = Math.ceil(120 * Math.random());
+  date.setMinutes(date.getMinutes() + timeGap);
+  const endTime = getFormatDate(date) + ` ` + getFormatTime(date);
 
   return `<form class="trip-events__item  event  event--edit" action="#" method="post">
   <header class="event__header">
@@ -83,12 +89,12 @@ export const createNewEventTemplate = (eventsData) => {
       <label class="visually-hidden" for="event-start-time-1">
         From
       </label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${date + ` ` + time}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">
         To
       </label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${date + ` ` + time}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime}">
     </div>
 
     <div class="event__field-group  event__field-group--price">

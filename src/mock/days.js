@@ -62,40 +62,29 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
-};
-
-const getFormatDate = (date) => {
-  const day = castTimeFormat(date.getDate());
-  const month = castTimeFormat(date.getMonth());
-  const year = date.getFullYear() % 100;
-  return day + `/` + month + `/` + year;
-};
-
-const getFormatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 12);
-  const minutes = castTimeFormat(date.getMinutes());
-
-  return `${hours}:${minutes}`;
-};
-
 const getActiveOptions = (isActive) => {
   return options.map((it) => {
     return isActive ? it : ``;
   }).slice(0, 2);
 };
 
-export const generateEvent = () => {
+const generateEvent = () => {
   return {
     transferEventTypes,
     actionEventTypes,
     cities,
     photo: photoUrl,
     description: generateDescription(descriptionSource),
-    date: getFormatDate(getRandomDate()),
-    time: getFormatTime(getRandomDate()),
+    date: getRandomDate(),
     price: getPrice(MAX_PRICE),
     options: getActiveOptions(getBoolean),
   };
 };
+
+const generateEvents = (count) => {
+  return new Array(count)
+    .fill(``)
+    .map(generateEvent);
+};
+
+export {generateEvent, generateEvents};
