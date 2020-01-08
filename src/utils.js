@@ -39,4 +39,8 @@ const getMarkupFromArray = (array, callback) => {
   .join(`\n`);
 };
 
-export {getFormatDate, getFormatTime, getFormatDateTime, getRandomArrayItem, getMarkupFromArray};
+const getArticle = (type, array) => {
+  return array.includes(type) ? `to` : `at`;
+};
+
+export {getFormatDate, getFormatTime, getFormatDateTime, getRandomArrayItem, getMarkupFromArray, getArticle};

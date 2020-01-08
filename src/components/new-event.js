@@ -1,5 +1,4 @@
-import {getFormatDate, getFormatTime, getMarkupFromArray} from '../utils.js';
-import {getArticle} from '../mock/days.js';
+import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle} from '../utils.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -70,7 +69,7 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
 
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-        ${type + ` ` + getArticle(type)}
+        ${type + ` ` + getArticle(type, transferEventTypes)}
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
       <datalist id="destination-list-1">

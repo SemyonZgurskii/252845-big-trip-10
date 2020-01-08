@@ -34,10 +34,6 @@ const options = [
   }
 ];
 
-const getArticle = (type) => {
-  return transferEventTypes.includes(type) ? `to` : `at`;
-};
-
 const getDescriptionLength = (max) => {
   return Math.ceil(Math.random() * max);
 };
@@ -105,4 +101,4 @@ const generateDays = (daysCount, eventsCount) => {
     .map(() => generateEvents(eventsCount));
 };
 
-export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities, getArticle};
+export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities};
