@@ -1,16 +1,16 @@
+import {getRandomArrayItem} from '../utils.js';
+
 const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_PRICE = 10000;
 const MAX_DATE_GAP = 15;
+const MAX_OPTIONS_COUNT = 2;
 
 const transferEventTypes = [`bus`, `drive`, `flight`, `ship`, `taxi`, `train`, `transport`];
 const actionEventTypes = [`check-in`, `restaurant`, `sightseeing`];
-
+const eventTypes = transferEventTypes.concat(actionEventTypes);
 const cities = [`Boston`, `San Francisco`, `Zurich`, `Wellington`, `Osaka`, `London`, `Singapor`, `Bologna`];
-
 const photoUrl = `http://picsum.photos/300/150?r=${Math.random()}`;
-
-const descriptionSource = [`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, `Cras aliquet varius magna, non porta ligula feugiat eget.`, `Fusce tristique felis at fermentum pharetra.`, `Aliquam id orci ut lectus varius viverra.`, `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`, `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`, `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`, `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`, `Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`];
-
+const descriptionSource = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 const options = [
   {
     type: `luggage`,
@@ -18,7 +18,7 @@ const options = [
     price: 10,
   },
   {
-    type: `seats`,
+    type: `comfort`,
     name: `Switch to comfort class`,
     price: 150,
   },
@@ -44,6 +44,7 @@ const getBoolean = () => {
 
 const generateDescription = (descriptionArray) => {
   return descriptionArray
+    .split(`. `)
     .filter(() => getBoolean())
     .slice(0, getDescriptionLength(MAX_DESCRIPTION_LENGTH))
     .join(` `);
@@ -54,37 +55,50 @@ const getPrice = (max) => {
 };
 
 const getRandomDate = () => {
-  const targetDate = new Date();
+  const date = new Date();
   const diffValue = Math.ceil(Math.random() * MAX_DATE_GAP);
 
-  targetDate.setDate(targetDate.getDate() + diffValue);
+  date.setDate(date.getDate() + diffValue);
 
-  return targetDate;
+  return date;
 };
 
-const getActiveOptions = (isActive) => {
-  return options.map((it) => {
-    return isActive ? it : ``;
-  }).slice(0, 2);
+const getActiveOptions = () => {
+  return options.sort(() => Math.random() - 0.5).slice(0, MAX_OPTIONS_COUNT).filter(() => getBoolean());
 };
 
-const generateEvent = () => {
+const generateEvent = (startDate, endDate) => {
   return {
-    transferEventTypes,
-    actionEventTypes,
-    cities,
+    type: getRandomArrayItem(eventTypes),
+    city: getRandomArrayItem(cities),
     photo: photoUrl,
     description: generateDescription(descriptionSource),
-    date: getRandomDate(),
+    startDate,
+    endDate,
     price: getPrice(MAX_PRICE),
-    options: getActiveOptions(getBoolean),
+    options: getActiveOptions(),
   };
 };
 
 const generateEvents = (count) => {
-  return new Array(count)
-    .fill(``)
-    .map(generateEvent);
+  let events = [];
+  let date = getRandomDate();
+  for (let j = 0; j < count; j++) {
+    const startDate = new Date();
+    startDate.setTime(date.getTime());
+    const timeGap = Math.ceil(120 * 60 * 1000 * Math.random());
+    date.setTime(date.getTime() + timeGap);
+    const endDate = new Date();
+    endDate.setTime(date.getTime());
+    events.push(generateEvent(startDate, endDate));
+  }
+  return events;
 };
 
-export {generateEvent, generateEvents};
+const generateDays = (daysCount, eventsCount) => {
+  return new Array(daysCount)
+    .fill(``)
+    .map(() => generateEvents(eventsCount));
+};
+
+export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities};

@@ -1,4 +1,4 @@
-import {getFormatDate, getFormatTime} from '../utils.js';
+import {getFormatDate, getFormatTime, getMarkupFromArray} from '../utils.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -33,21 +33,13 @@ const createOptionList = (options) => {
   }).join(`\n`);
 };
 
-export const createNewEventTemplate = (eventsData) => {
-  const {transferEventTypes, actionEventTypes, cities, photo, description, date, options} = eventsData;
-  const transferTypes = transferEventTypes
-    .map((it) => createEventType(it))
-    .join(`\n`);
-  const actionTypes = actionEventTypes
-    .map((it) => createEventType(it))
-    .join(`\n`);
-  const citiesList = cities
-    .map((it) => createCityOption(it))
-    .join(`\n`);
-  const startTime = getFormatDate(date) + ` ` + getFormatTime(date);
-  const timeGap = Math.ceil(120 * Math.random());
-  date.setMinutes(date.getMinutes() + timeGap);
-  const endTime = getFormatDate(date) + ` ` + getFormatTime(date);
+export const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
+  const {photo, description, startDate, endDate, options} = eventsData;
+  const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
+  const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
+  const citiesList = getMarkupFromArray(cities, createCityOption);
+  const startTime = getFormatDate(startDate) + ` ` + getFormatTime(startDate);
+  const endTime = getFormatDate(endDate) + ` ` + getFormatTime(endDate);
 
   return `<form class="trip-events__item  event  event--edit" action="#" method="post">
   <header class="event__header">

@@ -1,4 +1,5 @@
-import {getFormatDateTime, getFormatTime, getRandomArrayItem} from '../utils.js';
+import {getFormatDateTime, getFormatTime, getMarkupFromArray} from '../utils.js';
+import {MONTH_NAMES} from '../const.js';
 
 const createOption = (optionName, optionPrice) => {
   return `<li class="event__offer">
@@ -15,25 +16,23 @@ const createOptionList = (options) => {
 };
 
 const createEventTemplate = (eventData) => {
-  const {transferEventTypes, actionEventTypes, cities, date, price, options} = eventData;
+  const {type, city, startDate, endDate, price, options} = eventData;
 
-  const startTime = getFormatTime(date);
-  const startDateTime = getFormatDateTime(date);
-  const timeGap = Math.ceil(120 * Math.random());
-  date.setMinutes(date.getMinutes() + timeGap);
-  const gapHours = Math.floor(timeGap / 60) + `H`;
+  const startTime = getFormatTime(startDate);
+  const startDateTime = getFormatDateTime(startDate);
+  const timeGap = Math.round((endDate.getTime() - startDate.getTime()) / (60 * 1000));
+  const gapHours = Math.ceil(timeGap / 60) + `H`;
   const gapMinutes = timeGap % 60 + `M`;
-  const duration = gapHours + ` ` + gapMinutes;
-  const endDateTime = getFormatDateTime(date);
-  const endTime = getFormatTime(date);
+  const duration = timeGap % 60 >= 1 ? (gapHours + ` ` + gapMinutes) : gapMinutes;
+  const endDateTime = getFormatDateTime(endDate);
+  const endTime = getFormatTime(endDate);
   const optionsList = createOptionList(options);
-  const eventType = getRandomArrayItem(transferEventTypes.concat(actionEventTypes));
-  const eventName = eventType + ` ` + getRandomArrayItem(cities);
+  const eventName = type + ` ` + city;
 
   return `<li class="trip-events__item">
         <div class="event">
           <div class="event__type">
-            <img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
+            <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
           <h3 class="event__title">${eventName}</h3>
 
@@ -62,13 +61,10 @@ const createEventTemplate = (eventData) => {
       </li>`;
 };
 
-const createDayItemTemplate = (events) => {
-  const eventsMarkup = events
-    .map((it) => createEventTemplate(it))
-    .join(`\n`);
-  const dayNumber = 1;
-  const date = 1;
-  const monthDay = 1;
+const createDayItemTemplate = (events, dayNumber) => {
+  const eventsMarkup = getMarkupFromArray(events, createEventTemplate);
+  const date = getFormatDateTime(events[0].startDate);
+  const monthDay = events[0].startDate.getDate() + ` ` + MONTH_NAMES[events[0].startDate.getMonth()];
 
   return `<li class="trip-days__item  day">
   <div class="day__info">
