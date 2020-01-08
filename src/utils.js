@@ -4,7 +4,7 @@ const castTimeFormat = (value) => {
 
 const getFormatDate = (date) => {
   const day = castTimeFormat(date.getDate());
-  const month = castTimeFormat(date.getMonth());
+  const month = castTimeFormat(date.getMonth() + 1);
   const year = date.getFullYear() % 100;
   return day + `/` + month + `/` + year;
 };

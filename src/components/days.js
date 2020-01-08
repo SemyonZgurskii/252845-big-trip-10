@@ -1,5 +1,6 @@
 import {getFormatDateTime, getFormatTime, getMarkupFromArray} from '../utils.js';
 import {MONTH_NAMES} from '../const.js';
+import {getArticle} from '../mock/days.js';
 
 const createOption = (optionName, optionPrice) => {
   return `<li class="event__offer">
@@ -27,7 +28,7 @@ const createEventTemplate = (eventData) => {
   const endDateTime = getFormatDateTime(endDate);
   const endTime = getFormatTime(endDate);
   const optionsList = createOptionList(options);
-  const eventName = type + ` ` + city;
+  const eventName = type + ` ` + getArticle(type) + ` ` + city;
 
   return `<li class="trip-events__item">
         <div class="event">

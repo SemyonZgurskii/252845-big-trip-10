@@ -1,4 +1,5 @@
 import {getFormatDate, getFormatTime, getMarkupFromArray} from '../utils.js';
+import {getArticle} from '../mock/days.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -34,7 +35,7 @@ const createOptionList = (options) => {
 };
 
 export const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
-  const {photo, description, startDate, endDate, options} = eventsData;
+  const {photo, description, startDate, endDate, options, city, type, price} = eventsData;
   const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
   const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
   const citiesList = getMarkupFromArray(cities, createCityOption);
@@ -69,9 +70,9 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
 
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-        Sightseeing at
+        ${type + ` ` + getArticle(type)}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${city}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${citiesList}
       </datalist>
@@ -94,7 +95,7 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
     </div>
 
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
