@@ -1,9 +1,10 @@
-import DayComponent from './components/days.js';
 import FilterComponent from './components/filter.js';
 import InfoComponent from './components/info.js';
 import MenuComponent from './components/menu.js';
-import NewEventComponent from './components/new-event.js';
 import SortingComponent from './components/sorting.js';
+import DayComponent from './components/days.js';
+import EventComponent from './components/event.js';
+import EditFormComponent from './components/edit-form.js';
 import {render, RenderPosition} from './utils.js';
 
 import {filters} from './mock/filters';
@@ -19,18 +20,34 @@ const siteMainMenuContainerElement = siteHeaderElement.querySelector(`.trip-main
 const siteContentContainerElement = document.querySelector(`.trip-events`);
 const eventsListContainerElement = siteContentContainerElement.querySelector(`.trip-days`);
 
+const renderEvent = (eventData, container) => {
+  const eventComponent = new EventComponent(eventData);
+  const eventEditComponent = new EditFormComponent(eventData, transferEventTypes, actionEventTypes, cities);
+  const containerElement = container.querySelector(`.trip-events__list`);
+
+  const editButton = eventComponent.getElement().querySelector(`.event__rollup-btn`);
+  editButton.addEventListener(`click`, () => {
+    containerElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  });
+
+  const editForm = eventEditComponent.getElement();
+  editForm.addEventListener(`submit`, () => {
+    containerElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  });
+
+  render(containerElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const days = generateDays(DAYS_COUNT, EVENTS_COUNT);
-
-
 
 render(siteMainMenuContainerElement, new MenuComponent(menuNames).getElement(), RenderPosition.AFTERBEGIN);
 render(siteMainMenuContainerElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 render(siteTripInfoContainerElement, new InfoComponent(days).getElement(), RenderPosition.AFTERBEGIN);
-// render(siteContentContainerElement, new NewEventComponent(days[0].shift(), transferEventTypes, actionEventTypes, cities).getElement(), RenderPosition.AFTERBEGIN);
-days.forEach((it, i) => renderDay(it, i + 1));
 render(siteContentContainerElement, new SortingComponent().getElement(), RenderPosition.AFTERBEGIN);
-// days.forEach((it, i) => render(eventsListContainerElement, new DayComponent(it, i + 1).getElement(), RenderPosition.BEFOREEND));
 
-// стрелка вниз - click | event__rollup-btn
-//, тег form - submit | trip-events__item
+days.forEach((it, i) => {
+  const day = new DayComponent(it, i + 1).getElement();
+  it.forEach((event) => renderEvent(event, day));
+  render(eventsListContainerElement, day, RenderPosition.BEFOREEND);
+});
 

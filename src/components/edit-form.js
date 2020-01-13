@@ -33,7 +33,7 @@ const createOptionList = (options) => {
   }).join(`\n`);
 };
 
-const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
+const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
   const {photo, description, startDate, endDate, options, city, type, price} = eventsData;
   const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
   const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
@@ -126,9 +126,9 @@ const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes
 </form>`;
 };
 
-export default class NewEventComponent {
-  constructor(eventsData, transferEventTypes, actionEventTypes, cities) {
-    this._eventsData = eventsData;
+export default class EditFormComponent {
+  constructor(eventData, transferEventTypes, actionEventTypes, cities) {
+    this._eventData = eventData;
     this._transferEventTypes = transferEventTypes;
     this._actionEventTypes = actionEventTypes;
     this._cities = cities;
@@ -136,7 +136,7 @@ export default class NewEventComponent {
   }
 
   getTemplate() {
-    return createNewEventTemplate(this._eventsData, this._transferEventTypes, this._actionEventTypes, this._cities);
+    return createEditFormTemplate(this._eventData, this._transferEventTypes, this._actionEventTypes, this._cities);
   }
 
   getElement() {
