@@ -1,3 +1,4 @@
+import {createElement} from '../utils.js';
 import {MONTH_NAMES} from '../const.js';
 
 const getDatesInterval = (startDate, finishDate) => {
@@ -7,7 +8,7 @@ const getDatesInterval = (startDate, finishDate) => {
 };
 
 
-export const createInfoTemplate = (days) => {
+const createInfoTemplate = (days) => {
   const firstEvent = days[0][0];
   const startPoint = firstEvent.city;
   const finishPoint = days[days.length - 1][days.length - 1].city;
@@ -29,3 +30,26 @@ export const createInfoTemplate = (days) => {
   </p>
 </section>`;
 };
+
+export default class InfoComponent {
+  constructor(days) {
+    this._days = days;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createInfoTemplate(this._days);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

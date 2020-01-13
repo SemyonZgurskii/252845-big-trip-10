@@ -1,6 +1,27 @@
-import {getFormatDateTime, getFormatTime, getMarkupFromArray, getArticle} from '../utils.js';
-import {transferEventTypes} from '../mock/days.js';
+import {getFormatDateTime, getFormatTime, getMarkupFromArray, getArticle, createElement, render} from '../utils.js';
+import NewEventComponent from './new-event.js';
+import {transferEventTypes, actionEventTypes, cities} from '../mock/days.js';
 import {MONTH_NAMES} from '../const.js';
+
+
+const renderDay = (day, dayNumber) => {
+  debugger;
+  const dayComponent = new DayComponent(day, dayNumber);
+  const eventEditComponent = new NewEventComponent(day, transferEventTypes, actionEventTypes, cities);
+  const containerElement = dayComponent.parentNode;
+
+  const editButton = dayComponent.getElement().querySelector(`.event__rollup-btn`);
+  editButton.addEventListener(`click`, () => {
+    containerElement.replaceChild(eventEditComponent.getElement(), dayComponent.getElement());
+  });
+
+  const editForm = eventEditComponent.getElement().querySelector(`.trip-events__item`);
+  editForm.addEventListener(`submit`, () => {
+    containerElement.replaceChild(dayComponent.getElement(), eventEditComponent.getElement());
+  });
+
+  render(containerElement, dayComponent.getElement(), RenderPosition.BEFOREEND);
+};
 
 const createOption = (optionName, optionPrice) => {
   return `<li class="event__offer">
@@ -79,9 +100,26 @@ const createDayItemTemplate = (events, dayNumber) => {
 </li>`;
 };
 
-const createDaysListTemplate = () => {
-  return `<ul class="trip-days">
-</ul>`;
-};
+export default class DayComponent {
+  constructor(events, dayNumber) {
+    this._events = events;
+    this._dayNumber = dayNumber;
+    this._element = null;
+  }
 
-export {createDayItemTemplate, createDaysListTemplate};
+  getTemplate() {
+    return createDayItemTemplate(this._events, this._dayNumber);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._elemnt = null;
+  }
+}

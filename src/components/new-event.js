@@ -1,4 +1,4 @@
-import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle} from '../utils.js';
+import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle, createElement} from '../utils.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -33,7 +33,7 @@ const createOptionList = (options) => {
   }).join(`\n`);
 };
 
-export const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
+const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
   const {photo, description, startDate, endDate, options, city, type, price} = eventsData;
   const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
   const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
@@ -125,3 +125,29 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
   </section>
 </form>`;
 };
+
+export default class NewEventComponent {
+  constructor(eventsData, transferEventTypes, actionEventTypes, cities) {
+    this._eventsData = eventsData;
+    this._transferEventTypes = transferEventTypes;
+    this._actionEventTypes = actionEventTypes;
+    this._cities = cities;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createNewEventTemplate(this._eventsData, this._transferEventTypes, this._actionEventTypes, this._cities);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
