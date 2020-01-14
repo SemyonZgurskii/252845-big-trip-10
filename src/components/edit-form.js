@@ -1,4 +1,4 @@
-import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle} from '../utils.js';
+import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle, createElement} from '../utils.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -27,13 +27,20 @@ const createOption = (price, name, type) => {
 };
 
 const createOptionList = (options) => {
-  return options.map((it) => {
+  const optionsMarkup = options.map((it) => {
     const {type, name, price} = it;
     return createOption(price, name, type);
   }).join(`\n`);
+
+  const optionsListMarkup = `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+    <div class="event__available-offers">
+    ${optionsMarkup}
+    </div>`;
+
+  return optionsMarkup ? optionsListMarkup : ``;
 };
 
-export const createNewEventTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
+const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
   const {photo, description, startDate, endDate, options, city, type, price} = eventsData;
   const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
   const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
@@ -46,7 +53,7 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
-        <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -103,13 +110,7 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
   <section class="event__details">
 
     <section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-      <div class="event__available-offers">
-
       ${createOptionList(options)}
-
-      </div>
     </section>
 
     <section class="event__section  event__section--destination">
@@ -125,3 +126,29 @@ export const createNewEventTemplate = (eventsData, transferEventTypes, actionEve
   </section>
 </form>`;
 };
+
+export default class EditFormComponent {
+  constructor(eventData, transferEventTypes, actionEventTypes, cities) {
+    this._eventData = eventData;
+    this._transferEventTypes = transferEventTypes;
+    this._actionEventTypes = actionEventTypes;
+    this._cities = cities;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._eventData, this._transferEventTypes, this._actionEventTypes, this._cities);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
