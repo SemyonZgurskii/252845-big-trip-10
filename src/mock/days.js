@@ -9,7 +9,7 @@ const transferEventTypes = [`bus`, `drive`, `flight`, `ship`, `taxi`, `train`, `
 const actionEventTypes = [`check-in`, `restaurant`, `sightseeing`];
 const eventTypes = transferEventTypes.concat(actionEventTypes);
 const cities = [`Boston`, `San Francisco`, `Zurich`, `Wellington`, `Osaka`, `London`, `Singapor`, `Bologna`];
-const photoUrl = `http://picsum.photos/300/150?r=${Math.random()}`;
+// const photoUrl = `http://picsum.photos/300/150?r=${Math.random()}`;
 const descriptionSource = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 const options = [
   {
@@ -33,6 +33,10 @@ const options = [
     price: 9,
   }
 ];
+
+const getPhotoUrl = () => {
+  return `http://picsum.photos/300/150?r=${Math.random()}`;
+};
 
 const getDescriptionLength = (max) => {
   return Math.ceil(Math.random() * max);
@@ -71,7 +75,7 @@ const generateEvent = (startDate, endDate) => {
   return {
     type: getRandomArrayItem(eventTypes),
     city: getRandomArrayItem(cities),
-    photo: photoUrl,
+    photo: getPhotoUrl(),
     description: generateDescription(descriptionSource),
     startDate,
     endDate,

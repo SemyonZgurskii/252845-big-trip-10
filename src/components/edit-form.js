@@ -27,10 +27,17 @@ const createOption = (price, name, type) => {
 };
 
 const createOptionList = (options) => {
-  return options.map((it) => {
+  const optionsMarkup = options.map((it) => {
     const {type, name, price} = it;
     return createOption(price, name, type);
   }).join(`\n`);
+
+  const optionsListMarkup = `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+    <div class="event__available-offers">
+    ${optionsMarkup}
+    </div>`;
+
+  return optionsMarkup ? optionsListMarkup : ``;
 };
 
 const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
@@ -46,7 +53,7 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
-        <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -103,13 +110,7 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
   <section class="event__details">
 
     <section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-      <div class="event__available-offers">
-
       ${createOptionList(options)}
-
-      </div>
     </section>
 
     <section class="event__section  event__section--destination">

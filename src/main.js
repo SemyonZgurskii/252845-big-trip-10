@@ -35,6 +35,11 @@ const renderEvent = (eventData, container) => {
     containerElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
   });
 
+  const cancelButton = editForm.querySelector(`.event__reset-btn`);
+  cancelButton.addEventListener(`click`, () => {
+    containerElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  });
+
   render(containerElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 

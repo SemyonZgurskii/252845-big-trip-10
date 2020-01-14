@@ -21,9 +21,9 @@ const createEventTemplate = (eventData) => {
   const startTime = getFormatTime(startDate);
   const startDateTime = getFormatDateTime(startDate);
   const timeGap = Math.round((endDate.getTime() - startDate.getTime()) / (60 * 1000));
-  const gapHours = Math.ceil(timeGap / 60) + `H`;
+  const gapHours = Math.floor(timeGap / 60) + `H`;
   const gapMinutes = timeGap % 60 + `M`;
-  const duration = timeGap % 60 >= 1 ? (gapHours + ` ` + gapMinutes) : gapMinutes;
+  const duration = timeGap / 60 >= 1 ? (gapHours + ` ` + gapMinutes) : gapMinutes;
   const endDateTime = getFormatDateTime(endDate);
   const endTime = getFormatTime(endDate);
   const optionsList = createOptionList(options);
