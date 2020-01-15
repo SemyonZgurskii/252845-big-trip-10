@@ -38,10 +38,12 @@ const renderEvent = (eventData, container) => {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
+      resetForm();
       replaceEditToEvent();
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
+
 
   const editButton = eventComponent.getElement().querySelector(`.event__rollup-btn`);
   editButton.addEventListener(`click`, () => {
@@ -50,12 +52,17 @@ const renderEvent = (eventData, container) => {
   });
 
   const editForm = eventEditComponent.getElement();
+  const resetForm = () => {
+    editForm.reset();
+  };
+
   editForm.addEventListener(`submit`, () => {
     replaceEditToEvent();
   });
 
   const cancelButton = editForm.querySelector(`.event__rollup-btn`);
   cancelButton.addEventListener(`click`, () => {
+    resetForm();
     replaceEditToEvent();
   });
 
@@ -67,6 +74,7 @@ const days = generateDays(DAYS_COUNT, EVENTS_COUNT);
 render(siteMainMenuContainerElement, new MenuComponent(menuNames).getElement(), RenderPosition.AFTERBEGIN);
 render(siteMainMenuContainerElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 render(siteTripInfoContainerElement, new InfoComponent(days).getElement(), RenderPosition.AFTERBEGIN);
+
 if (days.length > 1) {
   render(siteContentContainerElement, new SortingComponent().getElement(), RenderPosition.AFTERBEGIN);
   render(siteContentContainerElement, new DaysListComponent().getElement(), RenderPosition.BEFOREEND);
