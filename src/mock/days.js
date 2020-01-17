@@ -1,4 +1,4 @@
-import {getRandomArrayItem} from '../utils.js';
+import {getRandomArrayItem} from '../utils/render.js';
 
 const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_PRICE = 10000;

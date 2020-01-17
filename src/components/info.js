@@ -1,5 +1,5 @@
-import {createElement} from '../utils.js';
 import {MONTH_NAMES} from '../const.js';
+import AbstractComponent from './abstract-component.js';
 
 const getDatesInterval = (startDate, finishDate) => {
   return startDate.getMonth() === finishDate.getMonth() ?
@@ -31,25 +31,13 @@ const createInfoTemplate = (days) => {
 </section>`;
 };
 
-export default class InfoComponent {
+export default class InfoComponent extends AbstractComponent {
   constructor(days) {
+    super();
     this._days = days;
-    this._element = null;
   }
 
   getTemplate() {
     return createInfoTemplate(this._days);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
