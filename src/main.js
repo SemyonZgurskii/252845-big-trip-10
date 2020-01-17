@@ -2,8 +2,8 @@ import FilterComponent from './components/filter.js';
 import InfoComponent from './components/info.js';
 import MenuComponent from './components/menu.js';
 import TripController from './controller/trip-controller.js';
-import {render, RenderPosition} from './utils/render.js';
 
+import {render, RenderPosition} from './utils/render.js';
 import {filters} from './mock/filters';
 import {menuNames} from './mock/menu.js';
 import {generateDays} from './mock/days';
