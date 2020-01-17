@@ -1,27 +1,16 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createNoEventsTemplate = () => {
   return `<p class="trip-events__msg">Click New Event to create your first point</p>`;
 };
 
-export default class NoEventsComponent {
+export default class NoEventsComponent extends AbstractComponent {
   constructor() {
+    super();
     this._element = null;
   }
 
   getTemplate() {
     return createNoEventsTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._elemnt = null;
   }
 }

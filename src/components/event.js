@@ -1,5 +1,7 @@
 import {transferEventTypes} from '../mock/days.js';
-import {getFormatDateTime, getFormatTime, getArticle, createElement} from '../utils.js';
+import {getArticle} from '../utils/render.js';
+import {getFormatDateTime, getFormatTime} from '../utils/common.js';
+import AbstractComponent from './abstract-component.js';
 
 const createOption = (optionName, optionPrice) => {
   return `<li class="event__offer">
@@ -61,25 +63,18 @@ const createEventTemplate = (eventData) => {
       </li>`;
 };
 
-export default class EventComponent {
+export default class EventComponent extends AbstractComponent {
   constructor(eventData) {
+    super();
     this._eventData = eventData;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventTemplate(this._eventData);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

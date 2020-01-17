@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createMenuItem = (menuName, isChecked) => {
   return `<a class="trip-tabs__btn ${isChecked ? `trip-tabs__btn--active` : ``}" href="#">${menuName}</a>`;
@@ -16,25 +16,13 @@ const createMenuTemplate = (menuNames) => {
   </div>`;
 };
 
-export default class MenuComponent {
+export default class MenuComponent extends AbstractComponent {
   constructor(menuNames) {
+    super();
     this._menuNames = menuNames;
-    this._element = null;
   }
 
   getTemplate() {
     return createMenuTemplate(this._menuNames);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,6 @@
-import {getFormatDate, getFormatTime, getMarkupFromArray, getArticle, createElement} from '../utils.js';
+import {getMarkupFromArray, getArticle} from '../utils/render.js';
+import {getFormatDate, getFormatTime} from '../utils/common.js';
+import AbstractComponent from './abstract-component.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -136,28 +138,25 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
 </form>`;
 };
 
-export default class EditFormComponent {
+export default class EditFormComponent extends AbstractComponent {
   constructor(eventData, transferEventTypes, actionEventTypes, cities) {
+    super();
     this._eventData = eventData;
     this._transferEventTypes = transferEventTypes;
     this._actionEventTypes = actionEventTypes;
     this._cities = cities;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditFormTemplate(this._eventData, this._transferEventTypes, this._actionEventTypes, this._cities);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  setSubmitHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
   }
 
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

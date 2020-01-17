@@ -1,5 +1,6 @@
-import {createElement, getFormatDateTime} from '../utils.js';
+import {getFormatDateTime} from '../utils/common.js';
 import {MONTH_NAMES} from '../const.js';
+import AbstractComponent from './abstract-component.js';
 
 const createDayItemTemplate = (events, dayNumber) => {
   const date = getFormatDateTime(events[0].startDate);
@@ -16,26 +17,14 @@ const createDayItemTemplate = (events, dayNumber) => {
 </li>`;
 };
 
-export default class DayComponent {
+export default class DayComponent extends AbstractComponent {
   constructor(events, dayNumber) {
+    super();
     this._events = events;
     this._dayNumber = dayNumber;
-    this._element = null;
   }
 
   getTemplate() {
     return createDayItemTemplate(this._events, this._dayNumber);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._elemnt = null;
   }
 }
