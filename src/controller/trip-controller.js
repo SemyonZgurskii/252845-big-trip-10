@@ -84,23 +84,22 @@ export default class TripController {
       let sortedDays = [];
       switch (sortType) {
         case SortType.PRICE:
-          sortedDays = this._daysCopy.slice().map((it) => it.sort((a, b) => a.price - b.price));
+          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => a.price - b.price));
           break;
         case (SortType.PRICE + `Reversed`):
-          sortedDays = this._daysCopy.slice().map((it) => it.sort((a, b) => b.price - a.price));
+          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => b.price - a.price));
           break;
         case SortType.TIME:
-          sortedDays = this._daysCopy.slice().map((it) => it.sort((a, b) => getDurationEnequality(a) - getDurationEnequality(b)));
+          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => getDurationEnequality(a) - getDurationEnequality(b)));
           break;
         case (SortType.TIME + `Reversed`):
-          sortedDays = this._daysCopy.slice().map((it) => it.sort((a, b) => getDurationEnequality(b) - getDurationEnequality(a)));
+          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => getDurationEnequality(b) - getDurationEnequality(a)));
           break;
         case SortType.DEFAULT:
           sortedDays = this._days.slice();
           this._daysCopy = this._days;
           break;
       }
-
       const eventsListContainerElement = this._container.querySelector(`.trip-days`);
       eventsListContainerElement.innerHTML = ``;
       renderDays(sortedDays, eventsListContainerElement);
