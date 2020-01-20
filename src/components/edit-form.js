@@ -13,8 +13,12 @@ const createCityOption = (city) => {
   return `<option value=${city}></option>`;
 };
 
-const createImage = (imageUrl) => {
+const createPhoto = (imageUrl) => {
   return `<img class="event__photo" src=${imageUrl} alt="Event photo">`;
+};
+
+const createPhotosList = (photos) => {
+  return getMarkupFromArray(photos, createPhoto);
 };
 
 const createOption = (price, name, type) => {
@@ -130,7 +134,7 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          ${createImage(photo)}
+          ${createPhotosList(photo)}
         </div>
       </div>
     </section>

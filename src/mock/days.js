@@ -4,12 +4,12 @@ const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_PRICE = 10000;
 const MAX_DATE_GAP = 15;
 const MAX_OPTIONS_COUNT = 2;
+const MAX_PHOTOS_COUNT = 4;
 
 const transferEventTypes = [`bus`, `drive`, `flight`, `ship`, `taxi`, `train`, `transport`];
 const actionEventTypes = [`check-in`, `restaurant`, `sightseeing`];
 const eventTypes = transferEventTypes.concat(actionEventTypes);
 const cities = [`Boston`, `San Francisco`, `Zurich`, `Wellington`, `Osaka`, `London`, `Singapor`, `Bologna`];
-// const photoUrl = `http://picsum.photos/300/150?r=${Math.random()}`;
 const descriptionSource = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 const options = [
   {
@@ -34,13 +34,21 @@ const options = [
   }
 ];
 
+const getRandomLength = (max) => {
+  return Math.ceil(Math.random() * max);
+};
+
 const getPhotoUrl = () => {
   return `http://picsum.photos/300/150?r=${Math.random()}`;
 };
 
-const getDescriptionLength = (max) => {
-  return Math.ceil(Math.random() * max);
+const getPhotos = () => {
+  const photosCount = 1 + getRandomLength(MAX_PHOTOS_COUNT);
+  return new Array(photosCount)
+    .fill(``)
+    .map(() => getPhotoUrl());
 };
+
 
 const getBoolean = () => {
   return Math.random() > 0.5;
@@ -50,7 +58,7 @@ const generateDescription = (descriptionArray) => {
   return descriptionArray
     .split(`. `)
     .filter(() => getBoolean())
-    .slice(0, getDescriptionLength(MAX_DESCRIPTION_LENGTH))
+    .slice(0, getRandomLength(MAX_DESCRIPTION_LENGTH))
     .join(` `);
 };
 
@@ -75,7 +83,7 @@ const generateEvent = (startDate, endDate) => {
   return {
     type: getRandomArrayItem(eventTypes),
     city: getRandomArrayItem(cities),
-    photo: getPhotoUrl(),
+    photo: getPhotos(),
     description: generateDescription(descriptionSource),
     startDate,
     endDate,
