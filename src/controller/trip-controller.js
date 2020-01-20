@@ -81,28 +81,26 @@ export default class TripController {
     }
 
     this._sortingComponent.onSortTypeChange((sortType) => {
-      let sortedDays = [];
       switch (sortType) {
         case SortType.PRICE:
-          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => a.price - b.price));
+          this._daysCopy = this._daysCopy.map((it) => it.slice().sort((a, b) => a.price - b.price));
           break;
         case (SortType.PRICE + `Reversed`):
-          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => b.price - a.price));
+          this._daysCopy = this._daysCopy.map((it) => it.reverse());
           break;
         case SortType.TIME:
-          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => getDurationEnequality(a) - getDurationEnequality(b)));
+          this._daysCopy = this._daysCopy.map((it) => it.slice().sort((a, b) => getDurationEnequality(a) - getDurationEnequality(b)));
           break;
         case (SortType.TIME + `Reversed`):
-          sortedDays = this._daysCopy.slice().map((it) => it.slice().sort((a, b) => getDurationEnequality(b) - getDurationEnequality(a)));
+          this._daysCopy = this._daysCopy.map((it) => it.reverse());
           break;
         case SortType.DEFAULT:
-          sortedDays = this._days.slice();
           this._daysCopy = this._days;
           break;
       }
       const eventsListContainerElement = this._container.querySelector(`.trip-days`);
       eventsListContainerElement.innerHTML = ``;
-      renderDays(sortedDays, eventsListContainerElement);
+      renderDays(this._daysCopy, eventsListContainerElement);
     });
   }
 }
