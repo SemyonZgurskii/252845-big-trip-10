@@ -1,6 +1,6 @@
 import {getMarkupFromArray, getArticle} from '../utils/render.js';
 import {getFormatDate, getFormatTime} from '../utils/common.js';
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
 
 const createEventType = (typeName) => {
   return `<div class="event__type-item">
@@ -47,12 +47,13 @@ const createOptionList = (options) => {
 };
 
 const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes, cities) => {
-  const {photo, description, startDate, endDate, options, city, type, price} = eventsData;
+  const {photo, description, startDate, endDate, options, city, type, price, isFavorite} = eventsData;
   const transferTypes = getMarkupFromArray(transferEventTypes, createEventType);
   const actionTypes = getMarkupFromArray(actionEventTypes, createEventType);
   const citiesList = getMarkupFromArray(cities, createCityOption);
   const startTime = getFormatDate(startDate) + ` ` + getFormatTime(startDate);
   const endTime = getFormatDate(endDate) + ` ` + getFormatTime(endDate);
+  const favoriteStatus = isFavorite ? `checked` : ``;
 
   return `<form class="event  event--edit" action="#" method="post">
   <header class="event__header">
@@ -109,7 +110,7 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
     <button class="event__reset-btn" type="reset">Delete</button>
 
-    <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+    <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favoriteStatus}>
     <label class="event__favorite-btn" for="event-favorite-1">
       <span class="visually-hidden">Add to favorite</span>
       <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -142,7 +143,7 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
 </form>`;
 };
 
-export default class EditFormComponent extends AbstractComponent {
+export default class EditFormComponent extends AbstractSmartComponent {
   constructor(eventData, transferEventTypes, actionEventTypes, cities) {
     super();
     this._eventData = eventData;
@@ -159,8 +160,15 @@ export default class EditFormComponent extends AbstractComponent {
     this.getElement().addEventListener(`submit`, handler);
   }
 
-  setClickHandler(handler) {
+  setRollupClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
   }
+
+  setFavoriteClickHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-checkbox`)
+      .addEventListener(`click`, handler);
+  }
+
+  recoveryListeners() {}
 }

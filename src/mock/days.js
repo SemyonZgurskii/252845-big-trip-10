@@ -89,6 +89,7 @@ const generateEvent = (startDate, endDate) => {
     endDate,
     price: getPrice(MAX_PRICE),
     options: getActiveOptions(),
+    isFavorite: getBoolean(),
   };
 };
 
