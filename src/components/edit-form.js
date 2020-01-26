@@ -146,10 +146,13 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
 export default class EditFormComponent extends AbstractSmartComponent {
   constructor(eventData, transferEventTypes, actionEventTypes, cities) {
     super();
-    this._eventData = eventData;
     this._transferEventTypes = transferEventTypes;
     this._actionEventTypes = actionEventTypes;
     this._cities = cities;
+    this._eventData = eventData;
+
+    this._currentType = eventData.type;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -170,5 +173,23 @@ export default class EditFormComponent extends AbstractSmartComponent {
       .addEventListener(`click`, handler);
   }
 
-  recoveryListeners() {}
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__type-list`)
+      .addEventListener(`click`, (evt) => {
+        if (!evt.target.classList.contains(`event__type-label`)) {
+          return;
+        }
+
+        // debugger;
+        // const placeholder = element.querySelector(`.event__type-output`);
+        this._eventData.type = evt.target.textContent;
+        this.rerender();
+      });
+  }
 }
