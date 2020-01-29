@@ -2,7 +2,7 @@ import EventComponent from '../components/event.js';
 import EditFormComponent from '../components/edit-form.js';
 
 import {replace, render, RenderPosition} from '../utils/render.js';
-import {transferEventTypes, actionEventTypes, cities} from '../mock/days.js';
+import {transferEventTypes, actionEventTypes, cities, generateDescription, descriptionSource} from '../mock/days.js';
 
 export default class PointController {
   constructor(container, onDataChange) {
@@ -18,6 +18,11 @@ export default class PointController {
   // должен принимать данные одной точки маршрута. Так же в него должен переехать код, который отвечает за отрисовку точки маршрута, ее замену на форму редактирования и наоборот, а также установка связанных с этим обработчиков событий.
   get container() {
     return this._container;
+  }
+
+  removeEvent() {
+    this._eventComponent = null;
+    this._eventEditComponent = null;
   }
 
   renderEvent(eventData, container) {
@@ -42,21 +47,32 @@ export default class PointController {
     const resetForm = () => {
       editForm.reset();
     };
+
     this._eventComponent.setEditButtonClickHandler(() => {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     });
+
     this._eventEditComponent.setSubmitHandler(replaceEditToEvent);
+
     this._eventEditComponent.setRollupClickHandler(() => {
       resetForm();
       replaceEditToEvent();
     });
+
     this._eventEditComponent.setFavoriteClickHandler(() => {
-      // debugger;
       this._onDataChange(this, eventData, Object.assign({}, eventData, {
         isFavorite: !eventData.isFavorite,
       }));
     });
+
+    this._eventEditComponent.setPointClickHandler(() => {
+      this._onDataChange(this, eventData, Object.assign({}, eventData, {
+        description: generateDescription(descriptionSource),
+      }));
+      this._eventEditComponent.rerender();
+    });
+
     render(containerElement, this._eventComponent, RenderPosition.BEFOREEND);
   }
 }

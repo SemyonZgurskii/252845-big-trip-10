@@ -114,4 +114,4 @@ const generateDays = (daysCount, eventsCount) => {
     .map(() => generateEvents(eventsCount));
 };
 
-export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities};
+export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities, generateDescription, descriptionSource};

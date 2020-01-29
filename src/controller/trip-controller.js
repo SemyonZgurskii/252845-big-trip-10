@@ -97,6 +97,7 @@ export default class TripController {
   }
 
   _onDataChange(pointController, oldData, newData) {
+    // debugger;
     let eventIndex = -1;
     const dayIndex = this._days.findIndex((day) => {
       eventIndex = day.findIndex((event) => event === oldData);
@@ -110,6 +111,7 @@ export default class TripController {
     let currentDay = this._days[dayIndex];
     currentDay = [].concat(currentDay.slice(0, eventIndex), newData, currentDay.slice(eventIndex + 1));
 
+    pointController.removeEvent();
     pointController.renderEvent(currentDay[eventIndex], pointController.container);
   }
 }

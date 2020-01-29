@@ -153,6 +153,11 @@ export default class EditFormComponent extends AbstractSmartComponent {
 
     this._currentType = eventData.type;
     this._subscribeOnEvents();
+    this._onSubmit = null;
+    this._onRollupClick = null;
+    this._onFavoriteClick = null;
+    this._onPointClick = null;
+
   }
 
   getTemplate() {
@@ -161,34 +166,49 @@ export default class EditFormComponent extends AbstractSmartComponent {
 
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+
+    this._onSubmit = handler;
   }
 
   setRollupClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
+
+    this._onRollupClick = handler;
   }
 
   setFavoriteClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-checkbox`)
       .addEventListener(`click`, handler);
+
+    this._onFavoriteClick = handler;
+  }
+
+  setPointClickHandler(handler) {
+    this.getElement().querySelector(`.event__input--destination`)
+      .addEventListener(`change`, handler);
+
+    this._onPointClick = handler;
   }
 
   recoveryListeners() {
     this._subscribeOnEvents();
+    this.setSubmitHandler(this._onSubmit);
+    this.setRollupClickHandler(this._onRollupClick);
+    this.setFavoriteClickHandler(this._onFavoriteClick);
+    this.setPointClickHandler(this._onPointClick);
   }
 
   _subscribeOnEvents() {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`)
-      .addEventListener(`click`, (evt) => {
-        if (!evt.target.classList.contains(`event__type-label`)) {
+      .addEventListener(`change`, (evt) => {
+        if (!evt.target.classList.contains(`event__type-input`)) {
           return;
         }
 
-        // debugger;
-        // const placeholder = element.querySelector(`.event__type-output`);
-        this._eventData.type = evt.target.textContent;
+        this._eventData.type = evt.target.value;
         this.rerender();
       });
   }
