@@ -55,7 +55,8 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
   const endTime = getFormatDate(endDate) + ` ` + getFormatTime(endDate);
   const favoriteStatus = isFavorite ? `checked` : ``;
 
-  return `<form class="event  event--edit" action="#" method="post">
+  return `<li class="trip-events__item">
+  <form class="event  event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -140,7 +141,8 @@ const createEditFormTemplate = (eventsData, transferEventTypes, actionEventTypes
       </div>
     </section>
   </section>
-</form>`;
+</form>
+</li>`;
 };
 
 export default class EditFormComponent extends AbstractSmartComponent {

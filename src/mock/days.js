@@ -93,23 +93,36 @@ const generateEvent = (startDate, endDate) => {
   };
 };
 
-const generateEvents = (count) => {
-  let events = [];
-  let date = getRandomDate();
-  for (let j = 0; j < count; j++) {
-    const startDate = new Date();
-    startDate.setTime(date.getTime());
-    const timeGap = Math.ceil(120 * 60 * 1000 * Math.random());
-    date.setTime(date.getTime() + timeGap);
-    const endDate = new Date();
-    endDate.setTime(date.getTime());
-    events.push(generateEvent(startDate, endDate));
-  }
-  return events;
-};
+// const generateEvents = (count) => {
+//   let events = [];
+//   let date = getRandomDate();
+//   for (let j = 0; j < count; j++) {
+//     const startDate = new Date();
+//     startDate.setTime(date.getTime());
+//     const timeGap = Math.ceil(120 * 60 * 1000 * Math.random());
+//     date.setTime(date.getTime() + timeGap);
+//     const endDate = new Date();
+//     endDate.setTime(date.getTime());
+//     events.push(generateEvent(startDate, endDate));
+//   }
+//   return events;
+// };
 
-const generateDays = (daysCount, eventsCount) => {
-  return new Array(daysCount)
+
+// const events = [eventOne, eventTwo, eventThree, eventFour, eventFive, eventSix];
+
+// let days = [events[0]];
+
+// events.forEach((event) => {
+//   if (event.day !== days[days.length - 1].day) {
+//     days.push(event);
+//   }
+// })
+
+// console.log(days);
+
+const generateEvents = (eventsCount) => {
+  return new Array(eventsCount)
     .fill(``)
     .map(() => generateEvents(eventsCount));
 };

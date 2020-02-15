@@ -21,15 +21,19 @@ export default class PointController {
   }
 
   removeEvent() {
-    this._eventComponent = null;
+    // debugger;
+    this._container.querySelector(`.trip-events__list`).removeChild(this._eventEditComponent.getElement());
+    this._eventEditComponent.removeElement();
     this._eventEditComponent = null;
+    this._eventComponent.removeElement();
+    this._eventComponent = null;
   }
 
   renderEvent(eventData, container) {
     this._eventComponent = new EventComponent(eventData);
     this._eventEditComponent = new EditFormComponent(eventData, transferEventTypes, actionEventTypes, cities);
     const containerElement = container.querySelector(`.trip-events__list`);
-    const editForm = this._eventEditComponent.getElement();
+    const editForm = this._eventEditComponent.getElement().querySelector(`form`);
     const replaceEventToEdit = () => {
       replace(this._eventEditComponent, this._eventComponent);
     };
@@ -67,10 +71,14 @@ export default class PointController {
     });
 
     this._eventEditComponent.setPointClickHandler(() => {
+      // debugger;
+      const newDescription = generateDescription(descriptionSource);
       this._onDataChange(this, eventData, Object.assign({}, eventData, {
-        description: generateDescription(descriptionSource),
+        description: newDescription,
+        // description: generateDescription(descriptionSource),
       }));
-      this._eventEditComponent.rerender();
+      console.log(`yooo`);
+      // this._eventEditComponent.rerender();
     });
 
     render(containerElement, this._eventComponent, RenderPosition.BEFOREEND);
