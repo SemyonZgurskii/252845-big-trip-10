@@ -1,4 +1,4 @@
-import {transferEventTypes} from '../mock/days.js';
+import {transferEventTypes} from '../mock/events.js';
 import {getArticle} from '../utils/render.js';
 import {getFormatDateTime, getFormatTime} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';

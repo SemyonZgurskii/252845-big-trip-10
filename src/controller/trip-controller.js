@@ -6,11 +6,26 @@ import DayComponent from '../components/days.js';
 import NoEventsComponent from '../components/no-events.js';
 
 import {replace, render, RenderPosition} from '../utils/render.js';
-import {transferEventTypes, actionEventTypes, cities} from '../mock/days.js';
+import {transferEventTypes, actionEventTypes, cities} from '../mock/events.js';
 
 const getDurationEnequality = (event) => {
   return (event.endDate - event.startDate);
 };
+
+
+// const renderDays = (events, container, onDataChange) => {
+//   const daysDates = [...new Set(events.map(({startDate}) => startDate.getDate()))];
+//   const days = daysDates.map((it) => events.filter((event) => event.startDate.getDate() === it));
+//   days.forEach((it, i) => {
+//     const day = new DayComponent(it, i + 1);
+//     it.forEach((event) => {
+//       const newEvent = new PointController(day.getElement(), onDataChange);
+//       newEvent.renderEvent(event, day.getElement());
+//     });
+//     render(container, day, RenderPosition.BEFOREEND);
+//   });
+// }
+
 
 const renderEvent = (eventData, container) => {
   const eventComponent = new EventComponent(eventData);

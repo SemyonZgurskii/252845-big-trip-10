@@ -2,7 +2,9 @@ import {getRandomArrayItem} from '../utils/render.js';
 
 const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_PRICE = 10000;
-const MAX_DATE_GAP = 15;
+const MAX_DATE_GAP = 3;
+const MAX_EVENT_DURATION = 1000 * 60 * 180;
+const MAX_EVENT_GAP = 1000 * 60 * 600;
 const MAX_OPTIONS_COUNT = 2;
 const MAX_PHOTOS_COUNT = 4;
 
@@ -75,6 +77,13 @@ const getRandomDate = () => {
   return date;
 };
 
+const getEndDate = (startDate) => {
+  const endDate = new Date();
+  const eventGap = Math.floor(MAX_EVENT_DURATION * Math.random());
+  endDate.setTime(startDate.getTime() + eventGap);
+  return endDate;
+};
+
 const getActiveOptions = () => {
   return options.sort(() => Math.random() - 0.5).slice(0, MAX_OPTIONS_COUNT).filter(() => getBoolean());
 };
@@ -89,6 +98,7 @@ const generateEvent = (startDate, endDate) => {
     endDate,
     price: getPrice(MAX_PRICE),
     options: getActiveOptions(),
+    isFavorite: getBoolean(),
   };
 };
 
@@ -97,9 +107,8 @@ const generateEvents = (count) => {
   let date = getRandomDate();
   for (let j = 0; j < count; j++) {
     const startDate = new Date();
-    startDate.setTime(date.getTime());
-    const timeGap = Math.ceil(120 * 60 * 1000 * Math.random());
-    date.setTime(date.getTime() + timeGap);
+    startDate.setTime(date.getTime() + Math.floor(MAX_EVENT_DURATION * Math.random()));
+    date.setTime(startDate.getTime() + Math.floor(MAX_EVENT_GAP * Math.random()));
     const endDate = new Date();
     endDate.setTime(date.getTime());
     events.push(generateEvent(startDate, endDate));
@@ -107,10 +116,4 @@ const generateEvents = (count) => {
   return events;
 };
 
-const generateDays = (daysCount, eventsCount) => {
-  return new Array(daysCount)
-    .fill(``)
-    .map(() => generateEvents(eventsCount));
-};
-
-export {generateEvent, generateEvents, generateDays, transferEventTypes, actionEventTypes, cities};
+export {generateEvents, transferEventTypes, actionEventTypes, cities, generateDescription, descriptionSource};
